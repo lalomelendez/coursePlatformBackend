@@ -1,9 +1,9 @@
 // controllers/authController.js
 
-exports.register = (req, res) => {
+export const register = (req, res) => {
   res.send("Register endpoint");
 };
 
-exports.login = (req, res) => {
+export const login = (req, res) => {
   res.send("Login endpoint");
 };

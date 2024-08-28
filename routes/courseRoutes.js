@@ -1,10 +1,9 @@
 // routes/courseRoutes.js
 
-const express = require("express");
-const router = express.Router();
+import express from "express";
+import { getCourse, createCourse } from "../controllers/courseController.js";
 
-// Controladores de cursos
-const { getCourse, createCourse } = require("../controllers/courseController");
+const router = express.Router(); // Definir el router
 
 // Ruta para obtener un curso
 router.get("/:id", getCourse);
@@ -12,4 +11,4 @@ router.get("/:id", getCourse);
 // Ruta para crear un curso
 router.post("/", createCourse);
 
-module.exports = router;
+export default router;

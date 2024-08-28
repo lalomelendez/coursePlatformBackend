@@ -1,10 +1,9 @@
 // routes/userRoutes.js
 
-const express = require("express");
-const router = express.Router();
+import express from "express";
+import { getUser, createUser } from "../controllers/userController.js";
 
-// Controladores de usuarios
-const { getUser, createUser } = require("../controllers/userController");
+const router = express.Router(); // Definir el router
 
 // Ruta para obtener un usuario
 router.get("/:id", getUser);
@@ -12,4 +11,4 @@ router.get("/:id", getUser);
 // Ruta para crear un usuario
 router.post("/", createUser);
 
-module.exports = router;
+export default router;
