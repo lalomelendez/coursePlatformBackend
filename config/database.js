@@ -1,15 +1,25 @@
-// config/database.js
-
 const mongoose = require("mongoose");
+const logger = require("./logger");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected");
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1);
+    await mongoose.connect("mongodb://localhost:27017/test");
+    logger.info("Conexión a MongoDB exitosa");
+  } catch (error) {
+    logger.error("Error al conectar a MongoDB", error);
   }
+
+  mongoose.connection.on("disconnected", () => {
+    logger.warn("Mongoose desconectado de MongoDB");
+  });
+
+  process.on("SIGINT", async () => {
+    await mongoose.connection.close();
+    logger.info(
+      "Conexión de Mongoose cerrada debido a la terminación de la aplicación"
+    );
+    process.exit(0);
+  });
 };
 
 module.exports = connectDB;
