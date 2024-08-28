@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
+import mongoose from "mongoose"; // Importar Mongoose
 import errorHandler from "./middlewares/errorHandler.js";
 import connectDB from "./config/database.js";
 import authRoutes from "./routes/authRoutes.js";
