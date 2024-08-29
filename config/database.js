@@ -24,15 +24,10 @@ const connectDB = async () => {
     mongoose.connection.on("disconnected", () => {
       console.log("Mongoose disconnected from DB");
     });
-    // Cerrar la conexión al apagar la aplicación
-    process.on("SIGINT", async () => {
-      await mongoose.connection.close();
-      console.log("Mongoose connection closed due to app termination");
-      process.exit(0);
-    });
   } catch (err) {
     console.error("Error de conexión a MongoDB:", err);
-    process.exit(1);
+    await mongoose.connection.close(); // Cerrar la conexión en caso de error
+    throw err; // Re-lanzar el error para que pueda ser manejado por las pruebas
   }
 };
 
