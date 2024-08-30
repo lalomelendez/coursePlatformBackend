@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js"; // Asegúrate de que la ruta sea correcta
 import dotenv from "dotenv";
 
+// Cargar variables de entorno desde el archivo .env
 dotenv.config();
+
+// Verificar que la variable de entorno se haya cargado correctamente
 
 const firstNames = [
   "John",
@@ -53,6 +56,11 @@ const generateRandomUser = () => {
 
 const createUsers = async () => {
   try {
+    // Verificar que la variable de entorno se haya cargado correctamente
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is not defined");
+    }
+
     await mongoose.connect(process.env.MONGO_URI);
 
     const users = new Set();

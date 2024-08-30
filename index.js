@@ -7,6 +7,9 @@ import connectDB from "./config/database.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js"; // Importar las rutas de pedidos
+import reviewRoutes from "./routes/reviewRoutes.js"; // Importar las rutas de evaluaciones
+
 import errorHandler from "./middlewares/errorHandler.js"; // Asegúrate de tener un middleware de manejo de errores
 
 // Cargar variables de entorno desde el archivo .env
@@ -28,6 +31,8 @@ connectDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/orders", orderRoutes); // Usar las rutas de pedidos
+app.use("/api/reviews", reviewRoutes); // Usar las rutas de evaluaciones
 
 // Manejo de errores
 app.use(errorHandler);

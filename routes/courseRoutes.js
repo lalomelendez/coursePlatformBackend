@@ -1,14 +1,22 @@
 // routes/courseRoutes.js
 
 import express from "express";
-import { getCourse, createCourse } from "../controllers/courseController.js";
+import {
+  getAllCourses,
+  getCourse,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  deleteAllCourses,
+} from "../controllers/courseController.js";
 
-const router = express.Router(); // Definir el router
+const router = express.Router();
 
-// Ruta para obtener un curso
+router.get("/", getAllCourses);
 router.get("/:id", getCourse);
-
-// Ruta para crear un curso
 router.post("/", createCourse);
+router.put("/:id", updateCourse);
+router.delete("/:id", deleteCourse);
+router.delete("/", deleteAllCourses);
 
 export default router;

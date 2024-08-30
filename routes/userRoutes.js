@@ -7,6 +7,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  deleteAllUsers, // Importar la nueva función
 } from "../controllers/userController.js";
 
 const router = express.Router(); // Definir el router
@@ -25,5 +26,8 @@ router.put("/:id", updateUser);
 
 // Ruta para eliminar un usuario por ID
 router.delete("/:id", deleteUser);
+
+// Ruta para eliminar todos los usuarios
+router.delete("/", deleteAllUsers);
 
 export default router;
