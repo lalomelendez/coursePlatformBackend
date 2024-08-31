@@ -9,6 +9,8 @@ import userRoutes from "./routes/userRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js"; // Importar las rutas de pedidos
 import reviewRoutes from "./routes/reviewRoutes.js"; // Importar las rutas de evaluaciones
+import messageRoutes from "./routes/messageRoutes.js"; // Importar las rutas de mensajes
+import announcementRoutes from "./routes/announcementRoutes.js"; // Importar las rutas de anuncios
 
 import errorHandler from "./middlewares/errorHandler.js"; // Asegúrate de tener un middleware de manejo de errores
 
@@ -33,6 +35,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/orders", orderRoutes); // Usar las rutas de pedidos
 app.use("/api/reviews", reviewRoutes); // Usar las rutas de evaluaciones
+app.use("/api/messages", messageRoutes); // Usar las rutas de mensajes
+app.use("/api/announcements", announcementRoutes); // Usar las rutas de anuncios
 
 // Manejo de errores
 app.use(errorHandler);
