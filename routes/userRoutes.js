@@ -1,33 +1,36 @@
-// routes/userRoutes.js
-
 import express from "express";
 import {
-  getAllUsers,
-  getUser,
+  getUsers,
   createUser,
   updateUser,
   deleteUser,
-  deleteAllUsers, // Importar la nueva función
+  getUserProfile,
+  updateUserProfile,
+  getUserById,
 } from "../controllers/userController.js";
+import { protect, admin, instructor } from "../middlewares/authMiddleware.js";
 
-const router = express.Router(); // Definir el router
+const router = express.Router();
 
-// Ruta para obtener todos los usuarios
-router.get("/", getAllUsers);
+// Rutas accesibles solo por Administradores
+router
+  .route("/")
+  .get(protect, admin, getUsers) // Obtener todos los usuarios
+  .post(protect, admin, createUser); // Crear un nuevo usuario
 
-// Ruta para obtener un usuario por ID
-router.get("/:id", getUser);
+router
+  .route("/:id")
+  .get(protect, admin, getUserById) // Obtener un usuario por ID
+  .put(protect, admin, updateUser) // Actualizar un usuario
+  .delete(protect, admin, deleteUser); // Eliminar un usuario
 
-// Ruta para crear un usuario
-router.post("/", createUser);
+// Rutas accesibles por Instructores y Administradores
+router
+  .route("/profile")
+  .get(protect, getUserProfile) // Obtener el perfil del usuario autenticado
+  .put(protect, updateUserProfile); // Actualizar el perfil del usuario autenticado
 
-// Ruta para actualizar un usuario por ID
-router.put("/:id", updateUser);
-
-// Ruta para eliminar un usuario por ID
-router.delete("/:id", deleteUser);
-
-// Ruta para eliminar todos los usuarios
-router.delete("/", deleteAllUsers);
+// Rutas accesibles por Instructores y Administradores para actualizar usuarios
+router.route("/instructor/:id").put(protect, instructor, updateUser); // Actualizar un usuario (Instructores y Administradores)
 
 export default router;

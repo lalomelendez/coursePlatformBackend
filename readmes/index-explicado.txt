@@ -1,0 +1,198 @@
+Descripción de Carpetas y Archivos
+/config
+database.js: Configuración de la conexión a la base de datos MongoDB. Contiene la lógica para conectar a la base de datos utilizando Mongoose.
+/controllers
+announcementController.js: Controlador para manejar la lógica de negocio relacionada con los anuncios (CRUD).
+authController.js: Controlador para manejar la lógica de autenticación (registro, inicio de sesión).
+courseController.js: Controlador para manejar la lógica de negocio relacionada con los cursos (CRUD).
+messageController.js: Controlador para manejar la lógica de negocio relacionada con los mensajes (CRUD).
+userController.js: Controlador para manejar la lógica de negocio relacionada con los usuarios (CRUD).
+/middlewares
+authMiddleware.js: Middleware para verificar tokens JWT y proteger rutas que requieren autenticación.
+errorHandler.js: Middleware para manejar errores globalmente en la aplicación.
+/models
+announcementModel.js: Modelo de Mongoose para los anuncios. Define la estructura de los documentos de anuncios en la base de datos.
+courseModel.js: Modelo de Mongoose para los cursos. Define la estructura de los documentos de cursos en la base de datos.
+messageModel.js: Modelo de Mongoose para los mensajes. Define la estructura de los documentos de mensajes en la base de datos.
+userModel.js: Modelo de Mongoose para los usuarios. Define la estructura de los documentos de usuarios en la base de datos.
+/routes
+announcementRoutes.js: Define las rutas de la API para manejar los anuncios.
+authRoutes.js: Define las rutas de la API para manejar la autenticación (registro, inicio de sesión).
+courseRoutes.js: Define las rutas de la API para manejar los cursos.
+messageRoutes.js: Define las rutas de la API para manejar los mensajes.
+userRoutes.js: Define las rutas de la API para manejar los usuarios.
+/mispruebas
+createAnnouncements.js: Script para generar anuncios aleatorios en la base de datos.
+createInstructors.js: Script para generar usuarios con el rol de instructor en la base de datos.
+createMessages.js: Script para generar mensajes aleatorios en la base de datos.
+Archivos Raíz
+.env: Archivo de configuración de variables de entorno. Contiene información sensible como la URI de la base de datos y claves secretas.
+index.js: Archivo principal de la aplicación. Configura y arranca el servidor Express, conecta a la base de datos y define las rutas principales.
+package.json: Archivo de configuración de npm. Contiene las dependencias del proyecto y scripts de npm.
+Descripción de Funcionalidades
+Autenticación y Autorización:
+
+Registro de usuarios.
+Inicio de sesión y generación de tokens JWT.
+Middleware para proteger rutas que requieren autenticación.
+Gestión de Usuarios:
+
+CRUD de usuarios.
+Roles de usuario (por ejemplo, instructor, estudiante).
+Gestión de Cursos:
+
+CRUD de cursos.
+Asociación de cursos con instructores.
+Gestión de Mensajes:
+
+CRUD de mensajes.
+Envío y recepción de mensajes entre usuarios.
+Gestión de Anuncios:
+
+CRUD de anuncios.
+Asociación de anuncios con cursos e instructores.
+Scripts de Pruebas:
+
+Scripts para generar datos de prueba en la base de datos (usuarios, cursos, mensajes, anuncios).
+Conclusión
+Esta estructura modular y bien organizada permite una fácil escalabilidad y mantenimiento del proyecto. Cada componente tiene su responsabilidad claramente definida, lo que facilita la implementación de nuevas funcionalidades y la gestión del código existente.
+
+import express from "express";
+import morgan from "morgan";
+import helmet from "helmet";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/database.js";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
+import announcementRoutes from "./routes/announcementRoutes.js"; // Importar las rutas de anuncios
+import errorHandler from "./middlewares/errorHandler.js"; // Asegúrate de tener un middleware de manejo de errores
+
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
+
+// Inicializar Express
+const app = express();
+
+// Paso 1: Configurar Middlewares
+app.use(express.json()); // Middleware para parsear JSON en las solicitudes
+app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
+app.use(morgan("dev")); // Middleware para registrar solicitudes HTTP en la consola
+app.use(helmet()); // Middleware para configurar cabeceras HTTP seguras
+app.use(cors()); // Middleware para habilitar CORS (Cross-Origin Resource Sharing)
+
+// Paso 2: Conectar a la base de datos
+connectDB();
+
+// Paso 3: Definir las Rutas Principales
+app.use("/api/auth", authRoutes); // Rutas de autenticación
+app.use("/api/users", userRoutes); // Rutas de usuarios
+app.use("/api/courses", courseRoutes); // Rutas de cursos
+app.use("/api/orders", orderRoutes); // Rutas de pedidos
+app.use("/api/reviews", reviewRoutes); // Rutas de evaluaciones
+app.use("/api/messages", messageRoutes); // Rutas de mensajes
+app.use("/api/announcements", announcementRoutes); // Rutas de anuncios
+
+// Middleware de manejo de errores
+app.use(errorHandler);
+
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
+
+export default app;
+
+Explicación Detallada
+Importaciones:
+
+express: Framework web para Node.js.
+morgan: Middleware para registrar solicitudes HTTP.
+helmet: Middleware para configurar cabeceras HTTP seguras.
+cors: Middleware para habilitar CORS.
+dotenv: Cargar variables de entorno desde un archivo .env.
+connectDB: Función para conectar a la base de datos MongoDB.
+Rutas de la API (authRoutes, userRoutes, courseRoutes, orderRoutes, reviewRoutes, messageRoutes, announcementRoutes).
+errorHandler: Middleware para manejar errores globalmente.
+Cargar Variables de Entorno:
+
+dotenv.config();
+
+Carga las variables de entorno desde el archivo .env para que estén disponibles en process.env.
+Inicializar Express:
+
+const app = express();
+
+
+Crea una instancia de la aplicación Express.
+Configurar Middlewares:
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(cors());
+
+
+
+express.json(): Middleware para parsear JSON en las solicitudes.
+express.urlencoded({ extended: true }): Middleware para parsear datos de formularios.
+morgan("dev"): Middleware para registrar solicitudes HTTP en la consola en modo desarrollo.
+helmet(): Middleware para configurar cabeceras HTTP seguras.
+cors(): Middleware para habilitar CORS (Cross-Origin Resource Sharing).
+Conectar a la Base de Datos:
+
+connectDB();
+
+
+Llama a la función connectDB para conectar a la base de datos MongoDB.
+Definir las Rutas Principales:
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/announcements", announcementRoutes);
+
+
+
+
+Define las rutas principales de la API y las asocia con sus respectivos controladores:
+/api/auth: Rutas de autenticación.
+/api/users: Rutas de usuarios.
+/api/courses: Rutas de cursos.
+/api/orders: Rutas de pedidos.
+/api/reviews: Rutas de evaluaciones.
+/api/messages: Rutas de mensajes.
+/api/announcements: Rutas de anuncios.
+
+
+
+Middleware de Manejo de Errores:
+
+app.use(errorHandler);
+
+Middleware para manejar errores globalmente en la aplicación.
+Iniciar el Servidor:
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
+
+
+Define el puerto en el que el servidor escuchará las solicitudes (por defecto 3000).
+Inicia el servidor y muestra un mensaje en la consola indicando que el servidor está corriendo.
+Exportar la Aplicación:
+export default app;
+
+Conclusión
+El archivo index.js configura y arranca el servidor Express, conecta a la base de datos MongoDB y define las rutas principales de la API. También incluye middlewares esenciales para la seguridad, el registro de solicitudes y el manejo de errores. Esta estructura modular y bien organizada facilita la escalabilidad y el mantenimiento del proyecto.
+

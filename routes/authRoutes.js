@@ -1,14 +1,14 @@
 // routes/authRoutes.js
 
 import express from "express";
-import { register, login } from "../controllers/authController.js";
+import { registerUser, loginUser } from "../controllers/authController.js";
 
-const router = express.Router(); // Definir el router
+const router = express.Router();
 
-// Ruta de registro
-router.post("/register", register);
+// Ruta para registrar un nuevo usuario
+router.post("/register", registerUser);
 
-// Ruta de login
-router.post("/login", login);
+// Ruta para iniciar sesión
+router.post("/login", loginUser);
 
 export default router;
