@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
+// Middleware para proteger rutas
 const protect = async (req, res, next) => {
   let token;
 
@@ -24,14 +25,16 @@ const protect = async (req, res, next) => {
   }
 };
 
+// Middleware para verificar si el usuario es administrador
 const admin = (req, res, next) => {
   if (req.user && req.user.role === "Administrador") {
     next();
   } else {
-    res.status(403).json({ message: "Forbidden" });
+    res.status(403).json({ message: "Forbidden, not an administrator" });
   }
 };
 
+// Middleware para verificar si el usuario es instructor
 const instructor = (req, res, next) => {
   if (req.user && req.user.role === "Instructor") {
     next();

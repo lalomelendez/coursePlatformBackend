@@ -1,5 +1,3 @@
-// models/courseModel.js
-
 import mongoose from "mongoose";
 
 const lessonSchema = new mongoose.Schema({
@@ -29,6 +27,7 @@ const courseSchema = new mongoose.Schema(
       enum: ["beginner", "intermediate", "advanced"],
       required: true,
     },
+    image: { type: String, required: true },
     modules: [moduleSchema],
     instructor: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,8 +36,7 @@ const courseSchema = new mongoose.Schema(
     },
     price: { type: Number, required: true },
     discounts: [discountSchema],
-    studentsEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    averageRating: { type: Number, default: 0 },
+    studentsEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Asegúrate de que este campo esté definido
   },
   {
     timestamps: true,
